@@ -1,26 +1,253 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══ FLR0 / HammerLock Design System ═══ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --charcoal: #1A1A1A;
+  --off-white: #F4F3EF;
+  --olive: #5C6B4E;
+  --concrete: #8E8E8E;
+  --steel: #2E4A5A;
+  --lake: #3A5A4A;
+  --rule: rgba(31,31,31,0.12);
+  --rule-light: rgba(244,243,239,0.08);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  background: var(--charcoal);
+  color: var(--off-white);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
 }
+
+/* ═══ Typography Classes ═══ */
+.font-serif {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+.font-sans {
+  font-family: 'DM Sans', system-ui, sans-serif;
+}
+
+/* ═══ Section Label ═══ */
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--lake);
+  font-weight: 500;
+}
+
+/* ═══ Glassmorphic Nav ═══ */
+.glass-nav {
+  background: rgba(26, 26, 26, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--rule-light);
+}
+
+/* ═══ Cards ═══ */
+.glass-card {
+  background: rgba(244, 243, 239, 0.03);
+  border: 1px solid rgba(244, 243, 239, 0.06);
+  transition: all 0.3s;
+}
+
+.glass-card:hover {
+  background: rgba(244, 243, 239, 0.06);
+  border-color: rgba(244, 243, 239, 0.12);
+}
+
+/* ═══ Buttons ═══ */
+.btn-primary {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  background: var(--off-white);
+  color: var(--charcoal);
+  border: 1px solid var(--off-white);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: transparent;
+  color: var(--off-white);
+}
+
+.btn-ghost {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  background: transparent;
+  color: var(--off-white);
+  border: 1px solid rgba(244, 243, 239, 0.2);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  border-color: var(--off-white);
+  background: rgba(244, 243, 239, 0.05);
+}
+
+.btn-lake {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  background: var(--lake);
+  color: var(--off-white);
+  border: 1px solid var(--lake);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.btn-lake:hover {
+  background: transparent;
+  color: var(--lake);
+}
+
+/* ═══ Form Inputs ═══ */
+.form-input {
+  background: rgba(244, 243, 239, 0.04);
+  border: 1px solid rgba(244, 243, 239, 0.1);
+  color: var(--off-white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  padding: 12px 14px;
+  transition: border-color 0.3s;
+  outline: none;
+  width: 100%;
+  border-radius: 6px;
+}
+
+.form-input:focus {
+  border-color: var(--lake);
+}
+
+.form-input::placeholder {
+  color: rgba(244, 243, 239, 0.3);
+}
+
+.form-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--concrete);
+  font-weight: 500;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ═══ Table Styling ═══ */
+.crm-table th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--concrete);
+  font-weight: 500;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--rule-light);
+}
+
+.crm-table td {
+  padding: 20px;
+  border-bottom: 1px solid rgba(244, 243, 239, 0.04);
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.crm-table tr {
+  transition: background 0.2s;
+}
+
+.crm-table tr:hover {
+  background: rgba(244, 243, 239, 0.03);
+}
+
+/* ═══ Status Badges ═══ */
+.badge-lead {
+  background: rgba(212, 175, 55, 0.1);
+  color: #D4AF37;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.badge-prospect {
+  background: rgba(58, 90, 74, 0.15);
+  color: #6BAF8D;
+  border: 1px solid rgba(58, 90, 74, 0.3);
+}
+
+.badge-customer {
+  background: rgba(107, 175, 141, 0.1);
+  color: #8ECFAD;
+  border: 1px solid rgba(107, 175, 141, 0.2);
+}
+
+.badge-closed {
+  background: rgba(142, 142, 142, 0.1);
+  color: var(--concrete);
+  border: 1px solid rgba(142, 142, 142, 0.2);
+}
+
+/* ═══ Scrollbar ═══ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(244, 243, 239, 0.08);
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(244, 243, 239, 0.15);
+}
+
+/* ═══ Animations ═══ */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeUp {
+  animation: fadeUp 0.8s ease forwards;
+}
+
+.animate-delay-1 { animation-delay: 0.1s; opacity: 0; }
+.animate-delay-2 { animation-delay: 0.2s; opacity: 0; }
+.animate-delay-3 { animation-delay: 0.3s; opacity: 0; }
+.animate-delay-4 { animation-delay: 0.4s; opacity: 0; }
+.animate-delay-5 { animation-delay: 0.5s; opacity: 0; }

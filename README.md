@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Generic CRM
 
-## Getting Started
+Local-first AI sales pipeline with an integrated Sales Assistant powered by Ollama.
 
-First, run the development server:
+Built with the same design system as [hammercg.com](https://hammercg.com) and [hammerlockai.com](https://hammerlockai.com) — Playfair Display + DM Sans + JetBrains Mono, charcoal/teal palette, glassmorphic UI.
+
+## Features
+
+- Full CRUD: add, edit, delete contacts with modal forms
+- Click-to-cycle status badges (Lead / Prospect / Customer / Closed)
+- Dashboard metrics: pipeline value, total contacts, avg deal size, active leads
+- Status filter tabs + real-time search
+- AI Sales Assistant (Ollama + Llama 3.2) with streaming responses
+- Fully local — no data leaves your machine
+
+## Tech Stack
+
+- **Next.js 15** (App Router) + TypeScript
+- **Tailwind CSS** + custom CSS design system
+- **Vercel AI SDK v6** + ollama-ai-provider-v2
+- **Ollama** with Llama 3.2 for local AI
+
+## Quick Start
 
 ```bash
+# 1. Install dependencies
+npm install
+
+# 2. Pull the model and start Ollama
+ollama pull llama3.2
+ollama serve
+
+# 3. Start the dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Design System
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Uses CSS custom properties matching the FLR0/HammerLock brand:
 
-## Learn More
+| Variable | Value | Usage |
+|----------|-------|-------|
+| `--charcoal` | `#1A1A1A` | Primary background |
+| `--off-white` | `#F4F3EF` | Primary text |
+| `--lake` | `#3A5A4A` | Accent / interactive |
+| `--concrete` | `#8E8E8E` | Secondary text |
 
-To learn more about Next.js, take a look at the following resources:
+Typography: Playfair Display (headlines), DM Sans (body), JetBrains Mono (labels/data).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Author
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Christopher L. Hammer** — [GitHub](https://github.com/christopherlhammer11-ai) | [hammercg.com](https://hammercg.com) | [hammerlockai.com](https://hammerlockai.com)
