@@ -1,54 +1,84 @@
 # Generic CRM
 
-Local-first AI sales pipeline with an integrated Sales Assistant powered by Ollama.
+Local-first AI sales pipeline for small teams that want useful sales assistance
+without sending their customer data to another CRM cloud by default.
 
-Built with the same design system as [hammercg.com](https://hammercg.com) and [hammerlockai.com](https://hammerlockai.com) — Playfair Display + DM Sans + JetBrains Mono, charcoal/teal palette, glassmorphic UI.
+Generic CRM is a working product surface in Christopher Hammer's AI engineering
+portfolio. It demonstrates full-stack product execution: dashboard metrics,
+contact workflows, status management, search, and a local Ollama-powered sales
+assistant.
+
+## Product Promise
+
+Run a lightweight sales pipeline locally, keep your customer context under your
+control, and use an AI assistant for follow-ups, qualification, and next-step
+thinking.
 
 ## Features
 
-- Full CRUD: add, edit, delete contacts with modal forms
-- Click-to-cycle status badges (Lead / Prospect / Customer / Closed)
-- Dashboard metrics: pipeline value, total contacts, avg deal size, active leads
-- Status filter tabs + real-time search
-- AI Sales Assistant (Ollama + Llama 3.2) with streaming responses
-- Fully local — no data leaves your machine
+- Contact CRUD with modal forms
+- Lead / Prospect / Customer / Closed pipeline statuses
+- Dashboard metrics for pipeline value, contacts, average deal size, and leads
+- Status filter tabs and real-time search
+- Local AI Sales Assistant powered by Ollama and Llama 3.2
+- Local-first data model
+- Production build verified
 
-## Tech Stack
+## Live Demo
 
-- **Next.js 15** (App Router) + TypeScript
-- **Tailwind CSS** + custom CSS design system
-- **Vercel AI SDK v6** + ollama-ai-provider-v2
-- **Ollama** with Llama 3.2 for local AI
+https://generic-crm.vercel.app
+
+## Current Status
+
+Verified on April 22, 2026:
+
+- `npm run build` passes
+- Production route `/` prerenders successfully
+- Dynamic AI route `/api/ai-assist` builds successfully
+
+Known productization work:
+
+- Add demo data reset / sample pipeline mode
+- Add a short visual walkthrough
+- Decide hosted SaaS vs local setup package
+- Add pricing and onboarding copy
 
 ## Quick Start
 
 ```bash
-# 1. Install dependencies
 npm install
-
-# 2. Pull the model and start Ollama
 ollama pull llama3.2
 ollama serve
-
-# 3. Start the dev server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open `http://localhost:3000`.
 
-## Design System
+## Build
 
-Uses CSS custom properties matching the FLR0/HammerLock brand:
+```bash
+npm run build
+```
 
-| Variable | Value | Usage |
-|----------|-------|-------|
-| `--charcoal` | `#1A1A1A` | Primary background |
-| `--off-white` | `#F4F3EF` | Primary text |
-| `--lake` | `#3A5A4A` | Accent / interactive |
-| `--concrete` | `#8E8E8E` | Secondary text |
+## Commercial Path
 
-Typography: Playfair Display (headlines), DM Sans (body), JetBrains Mono (labels/data).
+- Free live demo for proof
+- Paid setup for local-first small business CRM
+- Paid customization for niche pipelines
+- Optional hosted version once auth, persistence, and billing are added
+
+## Tech Stack
+
+- Next.js 16 App Router
+- React 19
+- TypeScript
+- Vercel AI SDK
+- Ollama local model provider
+- Dexie/local-first storage
 
 ## Author
 
-**Christopher L. Hammer** — [GitHub](https://github.com/christopherlhammer11-ai) | [hammercg.com](https://hammercg.com) | [hammerlockai.com](https://hammerlockai.com)
+Christopher L. Hammer
+
+- GitHub: https://github.com/christopherlhammer11-ai
+- Portfolio: https://2026-04-21-that-s-a-full-green-run.vercel.app

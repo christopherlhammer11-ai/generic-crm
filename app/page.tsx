@@ -24,6 +24,7 @@ import {
   getInitials,
   getAvatarGradient,
   daysAgo,
+  getPipelineInsights,
 } from '@/lib/crm';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
@@ -82,6 +83,7 @@ export default function GenericCRM() {
   const prospectCount = contacts.filter((c) => c.status === 'prospect').length;
   const customerCount = contacts.filter((c) => c.status === 'customer').length;
   const avgDeal = contacts.length > 0 ? totalValue / contacts.length : 0;
+  const insights = getPipelineInsights(contacts);
 
   // ─── CRUD ──────────────────────────────────────────────────────
   const openAdd = () => {
@@ -231,6 +233,44 @@ export default function GenericCRM() {
             value={String(leadCount + prospectCount)}
             sub={`${leadCount} leads · ${prospectCount} prospects · ${customerCount} customers`}
           />
+        </div>
+
+        {/* ── Demo intelligence ── */}
+        <div
+          className="glass-card animate-fadeUp animate-delay-2"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gap: 2,
+            marginBottom: 32,
+            overflow: 'hidden',
+            borderRadius: 8,
+          }}
+        >
+          <div style={{ padding: 24 }}>
+            <div className="section-label" style={{ marginBottom: 12 }}>
+              PIPELINE INTELLIGENCE
+            </div>
+            <h2 className="font-serif" style={{ fontSize: 24, fontWeight: 600, marginBottom: 10 }}>
+              {insights.nextBestAction}
+            </h2>
+            <p style={{ color: 'var(--concrete)', fontSize: 14, lineHeight: 1.6, maxWidth: 620 }}>
+              Demo mode now gives reviewers useful sales guidance even before Ollama is running.
+              The AI assistant remains available for local model workflows, but the product no
+              longer depends on a hidden service just to show value.
+            </p>
+          </div>
+          <div
+            style={{
+              display: 'grid',
+              gap: 1,
+              background: 'rgba(244,243,239,0.06)',
+            }}
+          >
+            <InsightStat label="Open Pipeline" value={formatCurrency(insights.totalOpenValue)} />
+            <InsightStat label="Open Deals" value={String(insights.openDealCount)} />
+            <InsightStat label="Needs Follow-Up" value={String(insights.staleContacts.length)} />
+          </div>
         </div>
 
         {/* ── Toolbar ── */}
@@ -781,6 +821,17 @@ function MetricCard({ label, value, sub }: { label: string; value: string; sub?:
       {sub && (
         <div style={{ fontSize: 11, color: 'var(--concrete)', marginTop: 4 }}>{sub}</div>
       )}
+    </div>
+  );
+}
+
+function InsightStat({ label, value }: { label: string; value: string }) {
+  return (
+    <div style={{ padding: '18px 20px', background: 'rgba(10, 12, 11, 0.58)' }}>
+      <div className="font-mono" style={{ fontSize: 9, letterSpacing: '0.14em', color: 'var(--concrete)', textTransform: 'uppercase', marginBottom: 6 }}>
+        {label}
+      </div>
+      <div style={{ fontSize: 22, fontWeight: 700, color: 'var(--lake)' }}>{value}</div>
     </div>
   );
 }

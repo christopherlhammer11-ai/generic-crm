@@ -145,3 +145,25 @@ export function daysAgo(dateString: string): string {
   if (diff === 1) return 'Yesterday';
   return `${diff}d ago`;
 }
+
+export function getPipelineInsights(contacts: Contact[]) {
+  const openDeals = contacts.filter((c) => c.status === 'lead' || c.status === 'prospect');
+  const totalOpenValue = openDeals.reduce((sum, contact) => sum + contact.value, 0);
+  const staleContacts = contacts.filter((contact) => {
+    const date = new Date(contact.lastContact);
+    const now = new Date();
+    const diff = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+    return diff >= 5 && contact.status !== 'closed';
+  });
+  const topOpportunity = [...openDeals].sort((a, b) => b.value - a.value)[0];
+
+  return {
+    openDealCount: openDeals.length,
+    totalOpenValue,
+    staleContacts,
+    topOpportunity,
+    nextBestAction: topOpportunity
+      ? `Follow up with ${topOpportunity.name} at ${topOpportunity.company}; this is the highest-value open opportunity.`
+      : 'Add or reopen an opportunity to generate a next-best action.',
+  };
+}
