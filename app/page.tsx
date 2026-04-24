@@ -361,7 +361,7 @@ export default function SynthPipe() {
           >
             <InsightStat label="Open value" value={formatCurrency(insights.totalOpenValue)} />
             <InsightStat label="Open deals" value={String(insights.openDealCount)} border />
-            <InsightStat label="Needs follow-up" value={String(insights.staleContacts.length)} alert={insights.staleContacts.length > 0} />
+            <InsightStat label="Follow-up" value={String(insights.staleContacts.length)} alert={insights.staleContacts.length > 0} />
           </div>
         </div>
 
@@ -451,17 +451,17 @@ export default function SynthPipe() {
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                         <div
+                          className={`bg-gradient-to-br ${getAvatarGradient(contact.name)}`}
                           style={{
                             width: 34,
                             height: 34,
                             borderRadius: '50%',
-                            background: `linear-gradient(135deg, var(--accent-dim), var(--accent))`,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             fontSize: 11,
                             fontWeight: 600,
-                            color: 'var(--bg-primary)',
+                            color: '#fff',
                             flexShrink: 0,
                           }}
                         >
@@ -958,9 +958,12 @@ function InsightStat({ label, value, border, alert }: { label: string; value: st
       padding: '20px 24px',
       borderLeft: border ? '1px solid var(--border)' : 'none',
       borderRight: border ? '1px solid var(--border)' : 'none',
-      minWidth: 120,
+      minWidth: 130,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
     }}>
-      <div style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 6 }}>
+      <div style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.03em', marginBottom: 6, whiteSpace: 'nowrap' }}>
         {label}
       </div>
       <div style={{ fontSize: 20, fontWeight: 700, color: alert ? 'var(--gold)' : 'var(--accent)' }}>{value}</div>
