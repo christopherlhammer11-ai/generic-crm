@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Generic CRM — Local-First AI Sales Pipeline",
+  title: "SynthPipe — AI-Powered Sales Pipeline",
   description:
     "AI-powered CRM with local-first architecture. Built with Next.js, shadcn/ui, and Ollama.",
 };

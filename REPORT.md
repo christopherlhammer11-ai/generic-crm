@@ -1,4 +1,4 @@
-# generic-crm — Analysis Report
+# SynthPipe (formerly generic-crm) — Analysis Report
 
 **Date:** 2026-04-22  
 **Project:** Local-first AI-powered sales pipeline CRM  

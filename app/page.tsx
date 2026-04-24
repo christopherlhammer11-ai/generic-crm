@@ -221,7 +221,7 @@ export default function GenericCRM() {
               className="font-mono"
               style={{ fontSize: 15, fontWeight: 700, letterSpacing: '0.08em' }}
             >
-              GENERIC CRM
+              SYNTHPIPE
             </span>
           </div>
 
@@ -586,7 +586,7 @@ export default function GenericCRM() {
             color: 'rgba(244,243,239,0.2)',
           }}
         >
-          GENERIC CRM &middot; NEXT.JS + SHADCN/UI + OLLAMA &middot; BUILT BY CHRISTOPHER L. HAMMER
+          SYNTHPIPE &middot; NEXT.JS + SHADCN/UI + OLLAMA &middot; BUILT BY CHRISTOPHER L. HAMMER
         </div>
       </main>
 

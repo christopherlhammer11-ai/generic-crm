@@ -1,5 +1,5 @@
 /**
- * Generic CRM API Validation Tests
+ * SynthPipe API Validation Tests
  *
  * Test framework: Node.js built-in test module
  * Run tests: node --test __tests__/api-validation.test.js

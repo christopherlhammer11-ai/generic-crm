@@ -1,9 +1,9 @@
-# Generic CRM
+# SynthPipe
 
-Local-first AI sales pipeline for small teams that want useful sales assistance
-without sending their customer data to another CRM cloud by default.
+AI-synthesized sales pipeline for small teams that want intelligent sales
+assistance without sending their customer data to another CRM cloud.
 
-Generic CRM is a working product surface in Christopher Hammer's AI engineering
+SynthPipe is a working product surface in Christopher Hammer's AI engineering
 portfolio. It demonstrates full-stack product execution: dashboard metrics,
 contact workflows, status management, search, and a local Ollama-powered sales
 assistant.
@@ -26,7 +26,7 @@ thinking.
 
 ## Live Demo
 
-https://generic-crm.vercel.app
+https://generic-crm.vercel.app (will update to synthpipe.vercel.app)
 
 ## Current Status
 

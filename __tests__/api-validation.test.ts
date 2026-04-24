@@ -1,5 +1,5 @@
 /**
- * Generic CRM API Validation Tests
+ * SynthPipe API Validation Tests
  *
  * Test framework: Vitest (add to package.json devDependencies if not present)
  * Install: npm install -D vitest @vitest/ui
