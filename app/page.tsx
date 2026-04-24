@@ -7,13 +7,16 @@ import {
   Bot,
   Edit,
   Trash2,
-  DollarSign,
   Users,
   TrendingUp,
   Target,
   X,
   Send,
   ChevronDown,
+  Zap,
+  Activity,
+  ArrowUpRight,
+  BarChart3,
 } from 'lucide-react';
 import {
   Contact,
@@ -41,7 +44,24 @@ const emptyContact: Partial<Contact> = {
   tags: [],
 };
 
-export default function GenericCRM() {
+// ─── Logo component ─────────────────────────────────────────────
+function SynthPipeLogo() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="28" height="28" rx="7" fill="url(#logo-grad)" />
+      <path d="M8 18L12 10L16 15L20 8" stroke="#0B0F0D" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="20" cy="8" r="2" fill="#0B0F0D" />
+      <defs>
+        <linearGradient id="logo-grad" x1="0" y1="0" x2="28" y2="28">
+          <stop stopColor="#34D399" />
+          <stop offset="1" stopColor="#059669" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
+export default function SynthPipe() {
   const [contacts, setContacts] = useState<Contact[]>(mockContacts);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -62,7 +82,7 @@ export default function GenericCRM() {
         try {
           setContacts(JSON.parse(stored));
         } catch (e) {
-          // If parsing fails, fall back to mockContacts (already in state)
+          // Fall back to mockContacts
         }
       }
     }
@@ -123,6 +143,7 @@ export default function GenericCRM() {
   const leadCount = contacts.filter((c) => c.status === 'lead').length;
   const prospectCount = contacts.filter((c) => c.status === 'prospect').length;
   const customerCount = contacts.filter((c) => c.status === 'customer').length;
+  const closedCount = contacts.filter((c) => c.status === 'closed').length;
   const avgDeal = contacts.length > 0 ? totalValue / contacts.length : 0;
   const insights = getPipelineInsights(contacts);
 
@@ -189,140 +210,158 @@ export default function GenericCRM() {
 
   // ─── Render ────────────────────────────────────────────────────
   return (
-    <div style={{ background: 'var(--charcoal)', color: 'var(--off-white)', minHeight: '100vh' }}>
+    <div style={{ background: 'var(--bg-primary)', color: 'var(--text-primary)', minHeight: '100vh' }}>
       {/* ═══ NAV ═══ */}
       <nav className="glass-nav" style={{ position: 'sticky', top: 0, zIndex: 100 }}>
         <div
           style={{
-            maxWidth: 1200,
+            maxWidth: 1280,
             margin: '0 auto',
-            padding: '0 40px',
-            height: 64,
+            padding: '0 32px',
+            height: 56,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div
-              style={{
-                width: 32,
-                height: 32,
-                background: 'var(--lake)',
-                borderRadius: 8,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <SynthPipeLogo />
+            <span
+              style={{ fontSize: 16, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text-primary)' }}
             >
-              <DollarSign size={16} color="var(--off-white)" />
-            </div>
+              SynthPipe
+            </span>
             <span
               className="font-mono"
-              style={{ fontSize: 15, fontWeight: 700, letterSpacing: '0.08em' }}
+              style={{
+                fontSize: 10,
+                padding: '2px 8px',
+                background: 'var(--accent-glow)',
+                color: 'var(--accent)',
+                borderRadius: 4,
+                border: '1px solid var(--accent-border)',
+                fontWeight: 500,
+              }}
             >
-              SYNTHPIPE
+              AI
             </span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <button className="btn-ghost" onClick={() => setAiOpen(true)} style={{ padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 8, borderRadius: 6 }}>
-                <Bot size={14} />
-                AI ASSISTANT
-              </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <button
+              className="btn-ghost"
+              onClick={() => setAiOpen(true)}
+              style={{
+                padding: '8px 16px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                fontSize: 13,
+              }}
+            >
+              <Zap size={14} style={{ color: 'var(--accent)' }} />
+              Assistant
               <div
                 style={{
-                  width: 8,
-                  height: 8,
+                  width: 6,
+                  height: 6,
                   borderRadius: '50%',
-                  background: ollamaConnected === null ? '#9CA3AF' : ollamaConnected ? '#22C55E' : '#EF4444',
-                  transition: 'background 0.3s',
+                  background: ollamaConnected === null ? 'var(--text-muted)' : ollamaConnected ? 'var(--accent)' : 'var(--red)',
+                  boxShadow: ollamaConnected ? '0 0 8px var(--accent)' : 'none',
+                  transition: 'all 0.3s',
                 }}
-                title={ollamaConnected === null ? 'Checking Ollama...' : ollamaConnected ? 'Ollama connected' : 'Ollama offline'}
               />
-            </div>
-            <button className="btn-lake" onClick={openAdd} style={{ padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 8, borderRadius: 6 }}>
+            </button>
+            <button
+              className="btn-primary"
+              onClick={openAdd}
+              style={{
+                padding: '8px 16px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+              }}
+            >
               <Plus size={14} />
-              NEW CONTACT
+              New contact
             </button>
           </div>
         </div>
       </nav>
 
       {/* ═══ MAIN ═══ */}
-      <main style={{ maxWidth: 1200, margin: '0 auto', padding: '48px 40px' }}>
-        {/* ── Hero area ── */}
-        <div className="animate-fadeUp" style={{ marginBottom: 48 }}>
-          <div className="section-label" style={{ marginBottom: 12 }}>
-            LOCAL-FIRST SALES PIPELINE
-          </div>
-          <h1
-            className="font-serif"
-            style={{ fontSize: 'clamp(28px, 4vw, 42px)', fontWeight: 600, lineHeight: 1.2, marginBottom: 8 }}
-          >
-            Sales Pipeline
-          </h1>
-          <p style={{ color: 'var(--concrete)', fontSize: 14, maxWidth: 500 }}>
-            AI-powered contact management with Ollama. Track leads, manage deals, and get intelligent follow-up suggestions.
-          </p>
+      <main style={{ maxWidth: 1280, margin: '0 auto', padding: '32px 32px 64px' }}>
+
+        {/* ── Metrics row ── */}
+        <div
+          className="animate-fadeUp"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: 12,
+            marginBottom: 24,
+          }}
+        >
+          <MetricCard
+            icon={<TrendingUp size={16} />}
+            label="Pipeline value"
+            value={formatCurrency(totalValue)}
+            accent
+          />
+          <MetricCard
+            icon={<Users size={16} />}
+            label="Total contacts"
+            value={String(contacts.length)}
+            sub={`${customerCount} converted`}
+          />
+          <MetricCard
+            icon={<BarChart3 size={16} />}
+            label="Avg deal size"
+            value={formatCurrency(avgDeal)}
+          />
+          <MetricCard
+            icon={<Target size={16} />}
+            label="Active pipeline"
+            value={String(leadCount + prospectCount)}
+            sub={`${leadCount} leads, ${prospectCount} prospects`}
+          />
         </div>
 
-        {/* ── Metrics ── */}
+        {/* ── Intelligence card ── */}
         <div
           className="animate-fadeUp animate-delay-1"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: 2,
-            marginBottom: 48,
-          }}
-        >
-          <MetricCard label="Pipeline Value" value={formatCurrency(totalValue)} />
-          <MetricCard label="Contacts" value={String(contacts.length)} />
-          <MetricCard label="Avg Deal" value={formatCurrency(avgDeal)} />
-          <MetricCard
-            label="Active Leads"
-            value={String(leadCount + prospectCount)}
-            sub={`${leadCount} leads · ${prospectCount} prospects · ${customerCount} customers`}
-          />
-        </div>
-
-        {/* ── Demo intelligence ── */}
-        <div
-          className="glass-card animate-fadeUp animate-delay-2"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-            gap: 2,
-            marginBottom: 32,
+            gridTemplateColumns: '1fr auto',
+            gap: 0,
+            marginBottom: 24,
+            background: 'var(--bg-card)',
+            border: '1px solid var(--border)',
+            borderRadius: 12,
             overflow: 'hidden',
-            borderRadius: 8,
           }}
         >
-          <div style={{ padding: 24 }}>
-            <div className="section-label" style={{ marginBottom: 12 }}>
-              PIPELINE INTELLIGENCE
+          <div style={{ padding: '24px 28px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+              <Activity size={14} style={{ color: 'var(--accent)' }} />
+              <span className="section-label">Pipeline intelligence</span>
             </div>
-            <h2 className="font-serif" style={{ fontSize: 24, fontWeight: 600, marginBottom: 10 }}>
+            <p style={{ fontSize: 15, fontWeight: 500, lineHeight: 1.5, color: 'var(--text-primary)', marginBottom: 4, maxWidth: 600 }}>
               {insights.nextBestAction}
-            </h2>
-            <p style={{ color: 'var(--concrete)', fontSize: 14, lineHeight: 1.6, maxWidth: 620 }}>
-              Demo mode now gives reviewers useful sales guidance even before Ollama is running.
-              The AI assistant remains available for local model workflows, but the product no
-              longer depends on a hidden service just to show value.
+            </p>
+            <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.5 }}>
+              AI-synthesized recommendations based on your current pipeline data.
             </p>
           </div>
           <div
             style={{
-              display: 'grid',
-              gap: 1,
-              background: 'rgba(244,243,239,0.06)',
+              display: 'flex',
+              borderLeft: '1px solid var(--border)',
             }}
           >
-            <InsightStat label="Open Pipeline" value={formatCurrency(insights.totalOpenValue)} />
-            <InsightStat label="Open Deals" value={String(insights.openDealCount)} />
-            <InsightStat label="Needs Follow-Up" value={String(insights.staleContacts.length)} />
+            <InsightStat label="Open value" value={formatCurrency(insights.totalOpenValue)} />
+            <InsightStat label="Open deals" value={String(insights.openDealCount)} border />
+            <InsightStat label="Needs follow-up" value={String(insights.staleContacts.length)} alert={insights.staleContacts.length > 0} />
           </div>
         </div>
 
@@ -333,95 +372,96 @@ export default function GenericCRM() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            marginBottom: 24,
-            gap: 20,
+            marginBottom: 16,
+            gap: 16,
             flexWrap: 'wrap',
           }}
         >
-          <div style={{ position: 'relative', flex: '0 1 360px' }}>
+          <div style={{ position: 'relative', flex: '0 1 340px' }}>
             <Search
               size={14}
-              style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--concrete)' }}
+              style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }}
             />
             <input
               className="form-input"
               placeholder="Search contacts..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ paddingLeft: 38 }}
+              style={{ paddingLeft: 34, fontSize: 13 }}
             />
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             {(['all', 'lead', 'prospect', 'customer', 'closed'] as const).map((s) => (
               <button
                 key={s}
                 onClick={() => setStatusFilter(s)}
-                className="font-mono"
                 style={{
-                  fontSize: 9,
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  padding: '8px 14px',
-                  borderRadius: 4,
+                  fontSize: 12,
+                  fontWeight: 500,
+                  padding: '6px 14px',
+                  borderRadius: 6,
                   border: 'none',
                   cursor: 'pointer',
-                  transition: 'all 0.3s',
-                  background: statusFilter === s ? 'rgba(244,243,239,0.08)' : 'transparent',
-                  color: statusFilter === s ? 'var(--off-white)' : 'var(--concrete)',
+                  transition: 'all 0.2s',
+                  background: statusFilter === s ? 'var(--accent-glow)' : 'transparent',
+                  color: statusFilter === s ? 'var(--accent)' : 'var(--text-muted)',
+                  borderWidth: 1,
+                  borderStyle: 'solid',
+                  borderColor: statusFilter === s ? 'var(--accent-border)' : 'transparent',
                 }}
               >
-                {s === 'all' ? 'All' : s}
+                {s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
               </button>
             ))}
-            <span className="font-mono" style={{ fontSize: 9, color: 'var(--concrete)', marginLeft: 12, letterSpacing: '0.1em' }}>
-              {filteredContacts.length} RESULT{filteredContacts.length !== 1 ? 'S' : ''}
+            <span style={{ fontSize: 12, color: 'var(--text-muted)', marginLeft: 12, fontWeight: 500 }}>
+              {filteredContacts.length} result{filteredContacts.length !== 1 ? 's' : ''}
             </span>
           </div>
         </div>
 
         {/* ── Table ── */}
         <div
-          className="glass-card animate-fadeUp animate-delay-3"
-          style={{ borderRadius: 8, overflow: 'hidden' }}
+          className="animate-fadeUp animate-delay-3"
+          style={{ borderRadius: 12, overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--bg-card)' }}
         >
           <table className="crm-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
-                <th style={{ textAlign: 'left', width: 280 }}>Contact</th>
+                <th style={{ textAlign: 'left', width: 260 }}>Contact</th>
                 <th style={{ textAlign: 'left' }}>Company</th>
                 <th style={{ textAlign: 'left' }}>Status</th>
                 <th style={{ textAlign: 'left' }}>Value</th>
-                <th style={{ textAlign: 'left' }}>Last Contact</th>
+                <th style={{ textAlign: 'left' }}>Last contact</th>
                 <th style={{ textAlign: 'left' }}>Tags</th>
-                <th style={{ width: 90 }}></th>
+                <th style={{ width: 80 }}></th>
               </tr>
             </thead>
             <tbody>
               {filteredContacts.length === 0 ? (
                 <tr>
-                  <td colSpan={7} style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--concrete)' }}>
-                    No contacts found.
+                  <td colSpan={7} style={{ textAlign: 'center', padding: '48px 20px', color: 'var(--text-muted)' }}>
+                    No contacts match your search.
                   </td>
                 </tr>
               ) : (
                 filteredContacts.map((contact) => (
-                  <tr key={contact.id} className="group">
+                  <tr key={contact.id}>
                     {/* Contact */}
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                         <div
-                          className="font-mono"
                           style={{
-                            width: 36,
-                            height: 36,
+                            width: 34,
+                            height: 34,
                             borderRadius: '50%',
-                            background: 'var(--lake)',
+                            background: `linear-gradient(135deg, var(--accent-dim), var(--accent))`,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             fontSize: 11,
                             fontWeight: 600,
+                            color: 'var(--bg-primary)',
                             flexShrink: 0,
                           }}
                         >
@@ -429,25 +469,24 @@ export default function GenericCRM() {
                         </div>
                         <div>
                           <div style={{ fontWeight: 500, fontSize: 14 }}>{contact.name}</div>
-                          <div style={{ fontSize: 12, color: 'var(--concrete)' }}>{contact.email}</div>
+                          <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{contact.email}</div>
                         </div>
                       </div>
                     </td>
 
                     {/* Company */}
-                    <td style={{ fontSize: 14, color: 'var(--off-white)' }}>{contact.company}</td>
+                    <td style={{ fontSize: 14, color: 'var(--text-secondary)' }}>{contact.company}</td>
 
                     {/* Status */}
                     <td>
                       <button
                         onClick={() => cycleStatus(contact.id)}
-                        className={`font-mono ${getStatusColor(contact.status)}`}
+                        className={getStatusColor(contact.status)}
                         style={{
-                          fontSize: 9,
-                          letterSpacing: '0.15em',
-                          textTransform: 'uppercase',
-                          padding: '6px 12px',
-                          borderRadius: 4,
+                          fontSize: 12,
+                          fontWeight: 500,
+                          padding: '4px 12px',
+                          borderRadius: 6,
                           cursor: 'pointer',
                           display: 'inline-flex',
                           alignItems: 'center',
@@ -464,20 +503,19 @@ export default function GenericCRM() {
                             display: 'inline-block',
                           }}
                         />
-                        {contact.status}
-                        <ChevronDown size={10} style={{ opacity: 0.5 }} />
+                        {contact.status.charAt(0).toUpperCase() + contact.status.slice(1)}
                       </button>
                     </td>
 
                     {/* Value */}
                     <td>
-                      <span className="font-mono" style={{ fontSize: 14, fontWeight: 600, color: 'var(--lake)', letterSpacing: '-0.01em' }}>
+                      <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--accent)' }}>
                         {formatCurrency(contact.value)}
                       </span>
                     </td>
 
                     {/* Last Contact */}
-                    <td style={{ fontSize: 13, color: 'var(--concrete)' }}>{daysAgo(contact.lastContact)}</td>
+                    <td style={{ fontSize: 13, color: 'var(--text-muted)' }}>{daysAgo(contact.lastContact)}</td>
 
                     {/* Tags */}
                     <td>
@@ -485,15 +523,14 @@ export default function GenericCRM() {
                         {contact.tags.map((tag, i) => (
                           <span
                             key={i}
-                            className="font-mono"
                             style={{
-                              fontSize: 9,
-                              letterSpacing: '0.1em',
-                              textTransform: 'uppercase',
-                              padding: '4px 8px',
-                              borderRadius: 3,
-                              border: '1px solid rgba(244,243,239,0.08)',
-                              color: 'var(--concrete)',
+                              fontSize: 11,
+                              fontWeight: 500,
+                              padding: '3px 8px',
+                              borderRadius: 4,
+                              border: '1px solid var(--border)',
+                              color: 'var(--text-secondary)',
+                              background: 'var(--bg-secondary)',
                             }}
                           >
                             {tag}
@@ -504,63 +541,63 @@ export default function GenericCRM() {
 
                     {/* Actions */}
                     <td>
-                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 4 }}>
+                      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
                         <button
                           onClick={() => openEdit(contact)}
                           style={{
-                            width: 32,
-                            height: 32,
-                            borderRadius: 4,
+                            width: 30,
+                            height: 30,
+                            borderRadius: 6,
                             border: 'none',
                             background: 'transparent',
-                            color: 'var(--concrete)',
+                            color: 'var(--text-muted)',
                             cursor: 'pointer',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            transition: 'all 0.2s',
+                            transition: 'all 0.15s',
                           }}
-                          onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--off-white)')}
-                          onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--concrete)')}
+                          onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.background = 'var(--bg-elevated)'; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'transparent'; }}
                         >
-                          <Edit size={14} />
+                          <Edit size={13} />
                         </button>
                         {deleteConfirm === contact.id ? (
                           <>
                             <button
                               onClick={() => deleteContact(contact.id)}
                               style={{
-                                width: 32, height: 32, borderRadius: 4, border: 'none',
-                                background: 'rgba(220,38,38,0.1)', color: '#ef4444', cursor: 'pointer',
+                                width: 30, height: 30, borderRadius: 6, border: 'none',
+                                background: 'var(--red-dim)', color: 'var(--red)', cursor: 'pointer',
                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                               }}
                             >
-                              <Trash2 size={14} />
+                              <Trash2 size={13} />
                             </button>
                             <button
                               onClick={() => setDeleteConfirm(null)}
                               style={{
-                                width: 32, height: 32, borderRadius: 4, border: 'none',
-                                background: 'transparent', color: 'var(--concrete)', cursor: 'pointer',
+                                width: 30, height: 30, borderRadius: 6, border: 'none',
+                                background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer',
                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                               }}
                             >
-                              <X size={14} />
+                              <X size={13} />
                             </button>
                           </>
                         ) : (
                           <button
                             onClick={() => setDeleteConfirm(contact.id)}
                             style={{
-                              width: 32, height: 32, borderRadius: 4, border: 'none',
-                              background: 'transparent', color: 'var(--concrete)', cursor: 'pointer',
+                              width: 30, height: 30, borderRadius: 6, border: 'none',
+                              background: 'transparent', color: 'var(--text-muted)', cursor: 'pointer',
                               display: 'flex', alignItems: 'center', justifyContent: 'center',
-                              transition: 'all 0.2s',
+                              transition: 'all 0.15s',
                             }}
-                            onMouseEnter={(e) => (e.currentTarget.style.color = '#ef4444')}
-                            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--concrete)')}
+                            onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--red)'; e.currentTarget.style.background = 'var(--red-dim)'; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.background = 'transparent'; }}
                           >
-                            <Trash2 size={14} />
+                            <Trash2 size={13} />
                           </button>
                         )}
                       </div>
@@ -574,19 +611,22 @@ export default function GenericCRM() {
 
         {/* ── Footer ── */}
         <div
-          className="font-mono"
           style={{
             marginTop: 48,
-            paddingTop: 24,
-            borderTop: '1px solid var(--rule-light)',
-            textAlign: 'center',
-            fontSize: 9,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            color: 'rgba(244,243,239,0.2)',
+            paddingTop: 20,
+            borderTop: '1px solid var(--border)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
           }}
         >
-          SYNTHPIPE &middot; NEXT.JS + SHADCN/UI + OLLAMA &middot; BUILT BY CHRISTOPHER L. HAMMER
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <SynthPipeLogo />
+            <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>SynthPipe</span>
+          </div>
+          <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+            Built by Christopher L. Hammer
+          </span>
         </div>
       </main>
 
@@ -600,29 +640,35 @@ export default function GenericCRM() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            background: 'rgba(0,0,0,0.6)',
-            backdropFilter: 'blur(4px)',
+            background: 'rgba(0,0,0,0.7)',
+            backdropFilter: 'blur(8px)',
           }}
           onClick={() => setIsAddOpen(false)}
         >
           <div
-            className="glass-card"
-            style={{ width: '100%', maxWidth: 480, borderRadius: 8, padding: 32 }}
+            style={{
+              width: '100%',
+              maxWidth: 480,
+              borderRadius: 12,
+              padding: 28,
+              background: 'var(--bg-card)',
+              border: '1px solid var(--border-hover)',
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-              <h2 className="font-serif" style={{ fontSize: 22, fontWeight: 600 }}>
-                {editingContact ? 'Edit Contact' : 'New Contact'}
+              <h2 style={{ fontSize: 18, fontWeight: 600 }}>
+                {editingContact ? 'Edit contact' : 'New contact'}
               </h2>
               <button
                 onClick={() => setIsAddOpen(false)}
-                style={{ background: 'none', border: 'none', color: 'var(--concrete)', cursor: 'pointer' }}
+                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: 4 }}
               >
                 <X size={18} />
               </button>
             </div>
 
-            <div style={{ display: 'grid', gap: 16 }}>
+            <div style={{ display: 'grid', gap: 14 }}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <div>
                   <label className="form-label">Name *</label>
@@ -661,7 +707,7 @@ export default function GenericCRM() {
                   />
                 </div>
                 <div>
-                  <label className="form-label">Deal Value ($)</label>
+                  <label className="form-label">Deal value ($)</label>
                   <input
                     className="form-input"
                     type="number"
@@ -698,12 +744,12 @@ export default function GenericCRM() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, marginTop: 24 }}>
-              <button className="btn-ghost" onClick={() => setIsAddOpen(false)} style={{ padding: '10px 24px', borderRadius: 6 }}>
-                CANCEL
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, marginTop: 20 }}>
+              <button className="btn-ghost" onClick={() => setIsAddOpen(false)} style={{ padding: '8px 20px' }}>
+                Cancel
               </button>
-              <button className="btn-lake" onClick={saveContact} style={{ padding: '10px 24px', borderRadius: 6 }}>
-                {editingContact ? 'SAVE CHANGES' : 'ADD TO PIPELINE'}
+              <button className="btn-primary" onClick={saveContact} style={{ padding: '8px 20px' }}>
+                {editingContact ? 'Save changes' : 'Add contact'}
               </button>
             </div>
           </div>
@@ -721,57 +767,78 @@ export default function GenericCRM() {
             justifyContent: 'flex-end',
           }}
         >
-          {/* Backdrop */}
           <div
-            style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)' }}
+            style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}
             onClick={() => setAiOpen(false)}
           />
 
-          {/* Panel */}
           <div
-            className="glass-nav"
             style={{
               position: 'relative',
-              width: 440,
+              width: 420,
               maxWidth: '100%',
               height: '100vh',
               display: 'flex',
               flexDirection: 'column',
-              borderLeft: '1px solid var(--rule-light)',
+              background: 'var(--bg-secondary)',
+              borderLeft: '1px solid var(--border)',
             }}
           >
-            <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--rule-light)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <Bot size={16} style={{ color: 'var(--lake)' }} />
-                  <span className="font-serif" style={{ fontSize: 18, fontWeight: 600 }}>AI Sales Assistant</span>
+            <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 8,
+                    background: 'var(--accent-glow)',
+                    border: '1px solid var(--accent-border)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Zap size={14} style={{ color: 'var(--accent)' }} />
                 </div>
-                <span className="font-mono" style={{ fontSize: 9, letterSpacing: '0.15em', color: 'var(--concrete)', textTransform: 'uppercase' }}>
-                  POWERED BY OLLAMA
-                </span>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 600 }}>SynthPipe AI</div>
+                  <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Powered by Ollama</div>
+                </div>
               </div>
               <button
                 onClick={() => setAiOpen(false)}
-                style={{ background: 'none', border: 'none', color: 'var(--concrete)', cursor: 'pointer' }}
+                style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: 4 }}
               >
                 <X size={18} />
               </button>
             </div>
 
             {/* Messages */}
-            <div style={{ flex: 1, overflowY: 'auto', padding: 24 }}>
+            <div style={{ flex: 1, overflowY: 'auto', padding: 20 }}>
               {chatError && (
-                <div style={{ padding: 12, borderRadius: 6, background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', color: '#ef4444', fontSize: 13, marginBottom: 16 }}>
+                <div style={{ padding: 12, borderRadius: 8, background: 'var(--red-dim)', border: '1px solid var(--red-border)', color: 'var(--red)', fontSize: 13, marginBottom: 16 }}>
                   {chatError}
                 </div>
               )}
               {messages.length === 0 ? (
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center' }}>
-                  <div style={{ width: 48, height: 48, borderRadius: 12, background: 'rgba(58,90,74,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-                    <Bot size={24} style={{ color: 'var(--lake)' }} />
+                  <div
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 12,
+                      background: 'var(--accent-glow)',
+                      border: '1px solid var(--accent-border)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: 16,
+                    }}
+                  >
+                    <Zap size={22} style={{ color: 'var(--accent)' }} />
                   </div>
-                  <p style={{ fontSize: 15, fontWeight: 500, marginBottom: 8 }}>Ask me anything</p>
-                  <p style={{ fontSize: 13, color: 'var(--concrete)', lineHeight: 1.6 }}>
+                  <p style={{ fontSize: 15, fontWeight: 600, marginBottom: 6 }}>Pipeline assistant</p>
+                  <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.7 }}>
                     &ldquo;Who should I follow up with?&rdquo;<br />
                     &ldquo;Analyze my high-value leads&rdquo;<br />
                     &ldquo;Suggest next actions for Sarah&rdquo;
@@ -782,7 +849,7 @@ export default function GenericCRM() {
                   <div
                     key={i}
                     style={{
-                      marginBottom: 16,
+                      marginBottom: 12,
                       display: 'flex',
                       justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start',
                     }}
@@ -790,12 +857,13 @@ export default function GenericCRM() {
                     <div
                       style={{
                         maxWidth: '85%',
-                        padding: '12px 16px',
-                        borderRadius: m.role === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                        padding: '10px 14px',
+                        borderRadius: m.role === 'user' ? '12px 12px 4px 12px' : '12px 12px 12px 4px',
                         fontSize: 13,
-                        lineHeight: 1.7,
-                        background: m.role === 'user' ? 'var(--lake)' : 'rgba(244,243,239,0.04)',
-                        border: m.role === 'user' ? 'none' : '1px solid var(--rule-light)',
+                        lineHeight: 1.6,
+                        background: m.role === 'user' ? 'var(--accent)' : 'var(--bg-elevated)',
+                        color: m.role === 'user' ? 'var(--bg-primary)' : 'var(--text-primary)',
+                        border: m.role === 'user' ? 'none' : '1px solid var(--border)',
                         whiteSpace: 'pre-wrap',
                       }}
                     >
@@ -809,9 +877,9 @@ export default function GenericCRM() {
               )}
               {isChatLoading && (
                 <div style={{ display: 'flex', gap: 4, padding: '8px 0' }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--lake)', animation: 'fadeUp 0.6s ease infinite alternate' }} />
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--lake)', animation: 'fadeUp 0.6s ease 0.15s infinite alternate' }} />
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--lake)', animation: 'fadeUp 0.6s ease 0.3s infinite alternate' }} />
+                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent)', animation: 'pulse-glow 1s ease infinite', animationDelay: '0s' }} />
+                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent)', animation: 'pulse-glow 1s ease infinite', animationDelay: '0.2s' }} />
+                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent)', animation: 'pulse-glow 1s ease infinite', animationDelay: '0.4s' }} />
                 </div>
               )}
             </div>
@@ -819,30 +887,30 @@ export default function GenericCRM() {
             {/* Input */}
             <form
               onSubmit={handleChatSubmit}
-              style={{ padding: '16px 24px', borderTop: '1px solid var(--rule-light)', display: 'flex', gap: 8 }}
+              style={{ padding: '14px 20px', borderTop: '1px solid var(--border)', display: 'flex', gap: 8 }}
             >
               <input
                 className="form-input"
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
                 placeholder="Ask about your pipeline..."
-                style={{ flex: 1 }}
+                style={{ flex: 1, fontSize: 13 }}
               />
               <button
                 type="submit"
                 disabled={isChatLoading || !chatInput.trim()}
                 style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 6,
+                  width: 38,
+                  height: 38,
+                  borderRadius: 8,
                   border: 'none',
-                  background: 'var(--lake)',
-                  color: 'var(--off-white)',
+                  background: 'var(--accent)',
+                  color: 'var(--bg-primary)',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  opacity: isChatLoading || !chatInput.trim() ? 0.4 : 1,
+                  opacity: isChatLoading || !chatInput.trim() ? 0.3 : 1,
                   transition: 'opacity 0.2s',
                   flexShrink: 0,
                 }}
@@ -858,38 +926,44 @@ export default function GenericCRM() {
 }
 
 // ─── Metric Card ─────────────────────────────────────────────────
-function MetricCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
+function MetricCard({ icon, label, value, sub, accent }: { icon: React.ReactNode; label: string; value: string; sub?: string; accent?: boolean }) {
   return (
     <div
-      className="glass-card"
-      style={{ padding: '24px 28px', borderRadius: 0 }}
+      style={{
+        padding: '20px 24px',
+        borderRadius: 12,
+        background: accent ? 'var(--accent-glow)' : 'var(--bg-card)',
+        border: `1px solid ${accent ? 'var(--accent-border)' : 'var(--border)'}`,
+      }}
     >
-      <div
-        className="font-mono"
-        style={{ fontSize: 9, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--concrete)', marginBottom: 8 }}
-      >
-        {label}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+        <span style={{ color: accent ? 'var(--accent)' : 'var(--text-muted)' }}>{icon}</span>
+        <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+          {label}
+        </span>
       </div>
-      <div
-        className="font-mono"
-        style={{ fontSize: 'clamp(24px, 3vw, 36px)', fontWeight: 500, letterSpacing: '-0.02em', color: 'var(--off-white)' }}
-      >
+      <div style={{ fontSize: 28, fontWeight: 700, letterSpacing: '-0.02em', color: accent ? 'var(--accent)' : 'var(--text-primary)' }}>
         {value}
       </div>
       {sub && (
-        <div style={{ fontSize: 11, color: 'var(--concrete)', marginTop: 4 }}>{sub}</div>
+        <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>{sub}</div>
       )}
     </div>
   );
 }
 
-function InsightStat({ label, value }: { label: string; value: string }) {
+function InsightStat({ label, value, border, alert }: { label: string; value: string; border?: boolean; alert?: boolean }) {
   return (
-    <div style={{ padding: '18px 20px', background: 'rgba(10, 12, 11, 0.58)' }}>
-      <div className="font-mono" style={{ fontSize: 9, letterSpacing: '0.14em', color: 'var(--concrete)', textTransform: 'uppercase', marginBottom: 6 }}>
+    <div style={{
+      padding: '20px 24px',
+      borderLeft: border ? '1px solid var(--border)' : 'none',
+      borderRight: border ? '1px solid var(--border)' : 'none',
+      minWidth: 120,
+    }}>
+      <div style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 6 }}>
         {label}
       </div>
-      <div style={{ fontSize: 22, fontWeight: 700, color: 'var(--lake)' }}>{value}</div>
+      <div style={{ fontSize: 20, fontWeight: 700, color: alert ? 'var(--gold)' : 'var(--accent)' }}>{value}</div>
     </div>
   );
 }

@@ -107,11 +107,11 @@ export function getStatusColor(status: Contact['status']) {
 
 export function getStatusDot(status: Contact['status']) {
   switch (status) {
-    case 'lead': return '#D4AF37';
-    case 'prospect': return '#6BAF8D';
-    case 'customer': return '#8ECFAD';
-    case 'closed': return '#8E8E8E';
-    default: return '#8E8E8E';
+    case 'lead': return '#FBBF24';
+    case 'prospect': return '#60A5FA';
+    case 'customer': return '#34D399';
+    case 'closed': return '#5A6B5F';
+    default: return '#5A6B5F';
   }
 }
 
