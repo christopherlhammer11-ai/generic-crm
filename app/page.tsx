@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Plus,
   Search,
@@ -51,6 +51,42 @@ export default function GenericCRM() {
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
   const [aiOpen, setAiOpen] = useState(false);
   const [chatInput, setChatInput] = useState('');
+  const [chatError, setChatError] = useState<string | null>(null);
+  const [ollamaConnected, setOllamaConnected] = useState<boolean | null>(null);
+
+  // Load contacts from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('crm-contacts');
+      if (stored) {
+        try {
+          setContacts(JSON.parse(stored));
+        } catch (e) {
+          // If parsing fails, fall back to mockContacts (already in state)
+        }
+      }
+    }
+  }, []);
+
+  // Save contacts to localStorage whenever they change
+  useEffect(() => {
+    if (typeof window !== 'undefined' && contacts.length > 0) {
+      localStorage.setItem('crm-contacts', JSON.stringify(contacts));
+    }
+  }, [contacts]);
+
+  // Check Ollama health on mount
+  useEffect(() => {
+    const checkOllama = async () => {
+      try {
+        const response = await fetch('http://localhost:11434/api/tags');
+        setOllamaConnected(response.ok);
+      } catch {
+        setOllamaConnected(false);
+      }
+    };
+    checkOllama();
+  }, []);
 
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
@@ -64,8 +100,13 @@ export default function GenericCRM() {
   const handleChatSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!chatInput.trim() || isChatLoading) return;
-    sendMessage({ text: chatInput });
-    setChatInput('');
+    setChatError(null);
+    try {
+      sendMessage({ text: chatInput });
+      setChatInput('');
+    } catch (error) {
+      setChatError(error instanceof Error ? error.message : 'Failed to send message');
+    }
   };
 
   // ─── Derived ───────────────────────────────────────────────────
@@ -185,10 +226,22 @@ export default function GenericCRM() {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <button className="btn-ghost" onClick={() => setAiOpen(true)} style={{ padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 8, borderRadius: 6 }}>
-              <Bot size={14} />
-              AI ASSISTANT
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <button className="btn-ghost" onClick={() => setAiOpen(true)} style={{ padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 8, borderRadius: 6 }}>
+                <Bot size={14} />
+                AI ASSISTANT
+              </button>
+              <div
+                style={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  background: ollamaConnected === null ? '#9CA3AF' : ollamaConnected ? '#22C55E' : '#EF4444',
+                  transition: 'background 0.3s',
+                }}
+                title={ollamaConnected === null ? 'Checking Ollama...' : ollamaConnected ? 'Ollama connected' : 'Ollama offline'}
+              />
+            </div>
             <button className="btn-lake" onClick={openAdd} style={{ padding: '10px 24px', display: 'flex', alignItems: 'center', gap: 8, borderRadius: 6 }}>
               <Plus size={14} />
               NEW CONTACT
@@ -707,6 +760,11 @@ export default function GenericCRM() {
 
             {/* Messages */}
             <div style={{ flex: 1, overflowY: 'auto', padding: 24 }}>
+              {chatError && (
+                <div style={{ padding: 12, borderRadius: 6, background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', color: '#ef4444', fontSize: 13, marginBottom: 16 }}>
+                  {chatError}
+                </div>
+              )}
               {messages.length === 0 ? (
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', textAlign: 'center' }}>
                   <div style={{ width: 48, height: 48, borderRadius: 12, background: 'rgba(58,90,74,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>

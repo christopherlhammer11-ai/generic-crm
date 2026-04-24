@@ -10,14 +10,29 @@ export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
   try {
-    const { messages, contacts } = (await req.json()) as {
+    const body = await req.json();
+    const { messages, contacts } = body as {
       messages: UIMessage[];
       contacts: Contact[];
     };
 
+    if (!messages || !Array.isArray(messages)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid messages format' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (!contacts || !Array.isArray(contacts)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid contacts format' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
     const pipelineSummary = buildPipelineSummary(contacts);
 
-    const result = streamText({
+    const result = await streamText({
       model: ollama('llama3.2'),
       system: `You are an AI Sales Assistant embedded in a CRM application.
 You help sales reps prioritize leads, suggest follow-up actions, and analyze their pipeline.
