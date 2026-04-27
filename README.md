@@ -2,7 +2,7 @@
 
 **AI-assisted sales pipeline for small teams.** A lightweight CRM surface for contacts, deals, follow-ups, and local AI-assisted sales workflows.
 
-Demo: **Watch the demo:** [Generic CRM](https://christopherhammer.dev/assets/videos/narrated/project-demos/generic-crm-narrated.mp4)
+**Demo:** [Generic CRM](https://christopherhammer.dev/assets/videos/narrated/project-demos/generic-crm-narrated.mp4)
 
 ## Who Uses It
 
