@@ -1,47 +1,28 @@
-# SynthPipe
+# Generic CRM / SynthPipe
 
-AI-synthesized sales pipeline for small teams that want intelligent sales
-assistance without sending their customer data to another CRM cloud.
+**AI-assisted sales pipeline for small teams.** A lightweight CRM surface for contacts, deals, follow-ups, and local AI-assisted sales workflows.
 
-SynthPipe is a working product surface in Christopher Hammer's AI engineering
-portfolio. It demonstrates full-stack product execution: dashboard metrics,
-contact workflows, status management, search, and a local Ollama-powered sales
-assistant.
+Demo: **Watch the demo:** [Generic CRM](https://christopherhammer.dev/assets/videos/narrated/project-demos/generic-crm-narrated.mp4)
 
-## Product Promise
+## Who Uses It
 
-Run a lightweight sales pipeline locally, keep your customer context under your
-control, and use an AI assistant for follow-ups, qualification, and next-step
-thinking.
+- Small businesses that do not need a heavy enterprise CRM
+- Sales teams tracking leads and next steps
+- Agencies building niche CRMs for clients
+- Operators who want local AI help with follow-up and qualification
 
-## Features
+## Core Features
 
-- Contact CRUD with modal forms
-- Lead / Prospect / Customer / Closed pipeline statuses
-- Dashboard metrics for pipeline value, contacts, average deal size, and leads
-- Status filter tabs and real-time search
-- Local AI Sales Assistant powered by Ollama and Llama 3.2
-- Local-first data model
-- Production build verified
+- Contact and lead management
+- Pipeline status tracking
+- Dashboard metrics
+- Search and filtering
+- Local AI sales assistant path with Ollama
+- Small-business workflow positioning
 
-## Live Demo
+## Why It Matters
 
-https://generic-crm.vercel.app (will update to synthpipe.vercel.app)
-
-## Current Status
-
-Verified on April 22, 2026:
-
-- `npm run build` passes
-- Production route `/` prerenders successfully
-- Dynamic AI route `/api/ai-assist` builds successfully
-
-Known productization work:
-
-- Add demo data reset / sample pipeline mode
-- Add a short visual walkthrough
-- Decide hosted SaaS vs local setup package
-- Add pricing and onboarding copy
+This repo shows practical business software, not just AI infrastructure. It connects the AI portfolio to real commercial workflows: leads, follow-up, deals, customer notes, and owner visibility.
 
 ## Quick Start
 
@@ -52,33 +33,24 @@ ollama serve
 npm run dev
 ```
 
-Open `http://localhost:3000`.
-
-## Build
-
-```bash
-npm run build
-```
+Open [http://localhost:3000](http://localhost:3000).
 
 ## Commercial Path
 
-- Free live demo for proof
-- Paid setup for local-first small business CRM
-- Paid customization for niche pipelines
-- Optional hosted version once auth, persistence, and billing are added
+- Local-business CRM setup
+- Custom pipeline builds for specific industries
+- Follow-up automation and review request workflows
+- Craig-powered website + CRM + social content packages
 
-## Tech Stack
+## Portfolio Context
 
-- Next.js 16 App Router
-- React 19
-- TypeScript
-- Vercel AI SDK
-- Ollama local model provider
-- Dexie/local-first storage
+Generic CRM is proof that I can build business-facing application surfaces around AI workflows and not just developer tools.
 
-## Author
+---
 
-Christopher L. Hammer
+Built by **Christopher L. Hammer** - self-taught AI/product builder shipping local-first tools, demos, and real product surfaces.
 
-- GitHub: https://github.com/christopherlhammer11-ai
-- Portfolio: https://2026-04-21-that-s-a-full-green-run.vercel.app
+- Portfolio: [christopherhammer.dev](https://christopherhammer.dev)
+- Proof demos: [https://christopherhammer.dev#proof](https://christopherhammer.dev#proof)
+- GitHub: [christopherlhammer11-ai](https://github.com/christopherlhammer11-ai)
+
